@@ -24,22 +24,20 @@ class Pets {
         
     }
     addAppointment = (service, date) => {
-        this.newAppointments.push(new Appointment(service, date));
+        const id = Date.now().toString();
+        this.newAppointments.push(new Appointment(id, service, date));
+        
     }
-    
+
 }
 
-
-
-
 class Appointment {
-    constructor(service, date){
+    constructor(id, service, date){
+        this.id = id;
         this.service = service;
         this.date = date; 
     }
 }
-
-
 
 class PetServices {
 
@@ -57,8 +55,8 @@ class PetServices {
 
     static newPet(pets) { 
         return $.post(this.APIURL, pets);
+        
     }
-   
     static updatePet(pets) { 
         return $.ajax({
             url: this.APIURL +  `/${pets.id}`,
@@ -121,11 +119,11 @@ class DOM {
 
 static deleteAppointment(petId, appointmentId) {
     for (let pet of this.pets) {
-        if (pets.id == petId) {
-            for (let appointment of pets.newAppointments) {
+        if (pet.id == petId) {
+            for (let appointment of pet.newAppointments) {
                 if (appointment.id == appointmentId) {
-                    pets.newAppointments.splice(pet.newAppointments.indexOf(appointment), 1);
-                    PetServices.updateAppointment(pet)
+                    pet.newAppointments.splice(pet.newAppointments.indexOf(appointment), 1);
+                    PetServices.updatePet(pet)
                     .then(() => {
                     return PetServices.getAllPets();
                     })
@@ -147,46 +145,47 @@ static deleteAppointment(petId, appointmentId) {
                 `
                 <div id="${pet.id}" class="card mt-4">
                  <div class="card-header">
-                    <h2>${pets.name}</h2>
-                    <button class="btn btn-danger" onclick="DOM.deletePet('${pet.id}')">Delete</button>
+                    <h2>${pet.name}</h2>
+                    <button class="btn btn-danger" onclick="DOM.deletePet('${pet.id}')">Remove Pet</button>
                  </div>
                   <div class="card-body">
                     <div class="card">
-                        <div class="row">
-                        <!-- <div class="col-sm">
-                                <input type="text" id="${pet.id}-name" class="form-control" placeholder="Pet Name"> 
-                            </div>-->
-                            
-                            <div class="col-sm">
-                            <select id="${pet.id}-service" class="form-control" name="services" placeholder="Service">
-                            <option value = "Haircut Only">Haircut Only</option>
-                            <option value = "Wash Only">Wash Only</option>
-                            <option value = "Cut and Wash">Cut and Wash</option>
-                            <option value = "Quick Trim and Wash">Quick Trim and Wash</option>
-                            </select>
+                        <div class="row g-2">                         
+                            <div class="col-md">
+                                <label for="date input" class="m-2">Services</label>
+                                    <select id="${pet.id}-service" class="form-select" name="services" placeholder="Service">
+                                    <option selected>Select an Option</option>
+                                    <option value = "Haircut Only">Haircut Only</option>
+                                    <option value = "Wash Only">Wash Only</option>
+                                    <option value = "Cut and Wash">Cut and Wash</option>
+                                    <option value = "Quick Trim and Wash">Quick Trim and Wash</option>
+                                    </select>
                             </div>
 
-                            <div class="col-sm">
-                            <input type="date" id="${pet.id}-date" class="form-control" placeholder="Appointment Date">
+                            <div class="col-md">
+                                <label for="date input" class="m-2">Requested Appointment Date</label>
+                                <input type="date" id="${pet.id}-date" class="form-control" placeholder="Appointment Date">
                             </div>
                         </div>
-                            <button id="${pets.id}-new-appointment" onclick="DOM.addAppointment('${pets.id}')" class="btn btn-primary form-control mt-2">Add</button>
+                            <button id="${pet.id}-new-appointment" onclick="DOM.addAppointment('${pet.id}')" class="btn btn-primary form-control mt-2">Add</button>
                     </div>
 
                   </div>
                 </div><br>`    
             );
-            // for (let appointment of pet.newAppointments) {
-            //     $(`#${pet.id}`).find('.card-body').append(
-            //         `
-            //         <p>
-            //             <span id="name-${pets.id}"><strong>Name: </strong> ${pet.name}</span>
-            //             <span id="appointment-${appointment.id}"><strong>Area: </strong> ${pet.name}</span>
-            //             <button class="btn btn-danger" onclick="DOM.deleteAppointment('${pets.id}', '${appointment.id}')">Delete Appointment</button>
-            //         </p>
-            //         `
-            //     );
-            // }
+            for (let appointment of pet.newAppointments) {
+                $(`#${pet.id}`).find('.card-body').append(
+                    `
+                    <p>
+                        <span class="blockquote" id="name-${pet.id}"><strong>Service: </strong> ${appointment.id}</span>
+                        <span class="blockquote" id="appointment-${appointment.id}"><strong>Date: </strong> ${appointment.service}</span>
+                        <button class="btn btn-danger m-2" onclick="DOM.deleteAppointment('${pet.id}', '${appointment.id}')">Delete Appointment</button>
+                    </p>
+                    `
+                );
+                
+            }
+            
         }
 
     }

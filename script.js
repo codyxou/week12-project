@@ -146,7 +146,7 @@ static deleteAppointment(petId, appointmentId) {
                 <div id="${pet.id}" class="card mt-4">
                  <div class="card-header">
                     <h2>${pet.name}</h2>
-                    <button class="btn btn-danger" onclick="DOM.deletePet('${pet.id}')">Remove Pet</button>
+                    <button class="btn btn-dark" onclick="DOM.deletePet('${pet.id}')">Remove Pet</button>
                  </div>
                   <div class="card-body">
                     <div class="card">
@@ -179,7 +179,7 @@ static deleteAppointment(petId, appointmentId) {
                     <p>
                         <span class="blockquote" id="name-${pet.id}"><strong>Service: </strong> ${appointment.id}</span>
                         <span class="blockquote" id="appointment-${appointment.id}"><strong>Date: </strong> ${appointment.service}</span>
-                        <button class="btn btn-danger m-2" onclick="DOM.deleteAppointment('${pet.id}', '${appointment.id}')">Delete Appointment</button>
+                        <button class="btn btn-dark m-2" onclick="DOM.deleteAppointment('${pet.id}', '${appointment.id}')">Delete Appointment</button>
                     </p>
                     `
                 );

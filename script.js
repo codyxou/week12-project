@@ -4,15 +4,12 @@
 Appointment card should contain:
 
 Name of Pet:
-Contact #
 Type of Service:
 Time and Date:
-Human: 
 
 options:
 
 Delete Appointment
-Update Appointment Time 
 Change Service 
 
 */
@@ -23,6 +20,7 @@ class Pets {
         this.newAppointments = [];
         
     }
+    //couldn't figure out how to create an appointment ID like in the videos, so I did some research to create random ones based on date and convert to string and passed it as a parameter when a new appointment is pushed to array
     addAppointment = (service, date) => {
         const id = Date.now().toString();
         this.newAppointments.push(new Appointment(id, service, date));
@@ -38,6 +36,8 @@ class Appointment {
         this.date = date; 
     }
 }
+
+//methods for DOM to call on to create a new Pet and new Appointment
 
 class PetServices {
 
@@ -77,7 +77,7 @@ class PetServices {
     }
 }
 
-//render DOM 
+//render DOM Actions
 
 class DOM {
     static pets; //represents all pets within DOM 
